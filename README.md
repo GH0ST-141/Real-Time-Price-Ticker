@@ -51,6 +51,7 @@ Try using a VPN to access the app. Connecting from a different region may resolv
 ---
 
 ## 📁 Project Structure
+
 real-time-price-tracker/
 ├── index.html
 ├── style.css
@@ -58,6 +59,7 @@ real-time-price-tracker/
 ├── images/
 │ └── bitcoin-logo.gif
 └── README.md
+
 ---
 
 ## 🏗️ How It Works

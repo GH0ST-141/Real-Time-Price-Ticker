@@ -1,13 +1,14 @@
-# 🚀 BTC/USDT Real-Time Price Tracker
+# 🚀 BTC/USDT Real-Time Price Ticker
+
+A modern, responsive web application for tracking Bitcoin (BTC) to US Dollar (USDT) prices in real time with beautiful visualizations and smooth animations.  
+**No backend required**—all data is fetched directly from Binance using Axios in the browser.
 
 A modern, responsive web application for tracking Bitcoin (BTC) to US Dollar (USDT) prices in real-time with beautiful visualizations and smooth animations. Built with vanilla JavaScript and Bootstrap 5.
 
 ## ✨ Features
 
-### 📊 Real-Time Price Tracking
-
-- **Live BTC/USDT prices** from Binance API
-- **5-second updates** for real-time data
+- **Live BTC/USDT prices** from Binance API using Axios (browser-side)
+- **Automatic updates every 5 seconds**
 - **Automatic retry logic** for connection failures
 - **Connection status indicator** showing API connectivity
 - **24-hour change calculations** updated every 5 seconds
@@ -16,35 +17,39 @@ A modern, responsive web application for tracking Bitcoin (BTC) to US Dollar (US
 
 - **24-hour price change** with color-coded indicators
 - **Percentage change display** with trend colors
-- **Mini line charts** with grid lines showing 24-hour price trends
-- **Interactive trend indicators** with smooth animations
-- **Theme-aware chart styling** for optimal visibility
-
-### 🎨 Modern UI/UX
-
+- **Mini line charts** for 24-hour price trends
+- **Smooth, animated transitions**
 - **Light/Dark theme toggle** with Font Awesome icons
-- **Responsive design** works on all devices
-- **Smooth animations** and transitions throughout
-- **Professional styling** with Bootstrap 5
-- **Theme-aware color schemes** for optimal contrast
+- **Responsive design** for all devices
+- Professional styling with Bootstrap 5
 
-### 🔧 Technical Features
+---
 
-- **Component-based architecture** with ES6 classes
-- **Axios HTTP client** for reliable API calls
-- **Error handling and recovery** mechanisms
-- **Modular code organization** with JSDoc documentation
-- **No server dependencies** - runs directly in browser
+## ⚠️ API Access Notice
 
-## 🚀 Quick Start
+Some internet service providers (ISPs) may block access to the Binance website and its API endpoints.  
+If you notice the price data does not update or you see connection errors, your ISP may be restricting access to the Binance API.
+
+**Solution:**  
+Try using a VPN to access the app. Connecting from a different region may resolve the issue and allow the app to fetch real-time BTC/USDT prices successfully.
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
 - Modern web browser with JavaScript enabled
 - Internet connection for API access
+- Any modern web browser
 
-### Installation
+### Usage
 
+1. **Clone the repository:**
+    ```bash
+    git clone https://github.com/GH0ST-141/Real-Time-Price-Ticker.git
+    cd Real-Time-Price-Ticker
+    ```
 1. **Clone the repository**
 
     ```bash
@@ -87,7 +92,6 @@ The application is static and can be deployed to any web server or CDN:
 
 ## 📁 Project Structure
 
-```text
 real-time-price-tracker/
 ├── index.html          # Main HTML file with Bootstrap and Axios CDN
 ├── style.css           # Application styles and custom CSS
@@ -136,117 +140,31 @@ real-time-price-tracker/
 
 ## 🎨 Customization
 
-### Styling
+- **Edit `style.css`** to adjust colors, fonts, or layout.
+- **Edit `script.js`** to tweak update intervals, retry logic, and API endpoint configuration.
 
-Modify `style.css` to customize:
-
-- Color schemes and themes
-- Chart dimensions and styling
-- Animation timings and transitions
-- Responsive breakpoints
-- Font families and sizes
-
-### Configuration
-
-Update `script.js` to modify:
-
-- **Update Intervals**: Change `updateInterval` in PriceTracker constructor
-- **API Endpoints**: Modify `apiUrl` and `historicalApiUrl` for different data sources
-- **Retry Logic**: Adjust `maxRetries` and `retryDelay` for error handling
-- **Chart Parameters**: Customize chart dimensions in MiniChart class
-- **Theme Persistence**: Modify localStorage key in ThemeManager
-
-### Component Customization
-
-Each UI component can be easily extended:
-
-- **PriceDisplay**: Modify currency formatting and display options
-- **MiniChart**: Adjust chart dimensions, grid lines, and styling
-- **ThemeManager**: Add new themes or modify existing color schemes
-
-## 🔧 Development
-
-### Local Development
-
-1. **Clone and open**: Download the repository and open `index.html` in your browser
-2. **Live editing**: Edit files directly and refresh browser to see changes
-3. **Browser dev tools**: Use F12 to inspect elements and debug JavaScript
-4. **SSL handling**: Configure browser to ignore certificate errors if needed (see Quick Start)
-
-### Code Style
-
-- **ES6+ JavaScript** with classes, arrow functions, and modern syntax
-- **Component-based architecture** with inheritance and composition
-- **JSDoc documentation** for all classes and methods
-- **Modular organization** with clear section separators
-- **Bootstrap 5** for responsive design and utilities
-- **Font Awesome** icons for consistent UI elements
-- **Axios** for reliable HTTP requests with error handling
-
-## 🌟 Key Features Explained
-
-### Real-Time Updates
-
-- Fetches live data every 5 seconds
-- Automatic retry on connection failures
-- Visual connection status indicator
-
-### Price Visualization
-
-- **Green indicators**: Price increases
-- **Red indicators**: Price decreases
-- **Gray indicators**: No change
-- **Smooth color transitions**
-
-### Historical Charts
-
-- 24-hour price trend lines
-- Grid-based chart containers
-- Responsive SVG graphics
-- Automatic scaling
-
-### Theme System
-
-- Light/Dark mode toggle
-- Smooth theme transitions
-- Persistent theme preference
-- Bootstrap theme integration
-
-## 🛡️ Security & Performance
-
-### Security Considerations
-
-- **No server-side processing**: All logic runs client-side
-- **API authentication**: Uses public Binance endpoints (no sensitive data)
-- **Content Security Policy**: Relies on Bootstrap/Axios CDNs
-- **Input validation**: Client-side data sanitization
-- **HTTPS enforcement**: Modern browsers require secure connections
-
-### Performance Optimizations
-
-- **Efficient DOM updates**: Targeted element manipulation
-- **SVG charts**: Lightweight vector graphics for charts
-- **Bootstrap utilities**: Optimized CSS classes
-- **Axios caching**: Browser-level HTTP caching
-- **Lazy initialization**: Components created on demand
-- **Minimal dependencies**: Only essential libraries loaded
+---
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+2. Create a new branch: `git checkout -b feature/your-feature`
+3. Commit your changes
+4. Push to your branch
 5. Open a Pull Request
+
+---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
+
+---
 
 ## 🙏 Acknowledgments
 
-- **Binance API** for providing free, reliable cryptocurrency data
-- **Bootstrap 5** for responsive UI components and utilities
-- **Font Awesome** for consistent and beautiful icons
-- **Axios** for robust HTTP client functionality
-- **Bootstrap Icons** for additional iconography
+- **Binance API** for real-time cryptocurrency data
+- **Axios** for HTTP requests
+- **Bootstrap** and **Font Awesome** for styling and icons
+
+---

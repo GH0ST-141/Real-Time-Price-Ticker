@@ -268,7 +268,7 @@ class ThemeManager {
 
 class PriceTracker {
     constructor(config = {}) {
-        this.apiUrl = config.apiUrl || 'https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT';
+        this.apiUrl = config.apiUrl || 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT';
         this.historicalApiUrl = 'https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1h&limit=24';
         this.updateInterval = config.updateInterval || 5000;
         this.maxRetries = config.maxRetries || 3;
@@ -276,6 +276,8 @@ class PriceTracker {
 
         this.previousPrice = null;
         this.historicalData = [];
+        this.changePercent = 0;
+        this.change24h = 0;
         this.intervalId = null;
         this.isRunning = false;
 
@@ -294,31 +296,48 @@ class PriceTracker {
 
     async fetchHistoricalData() {
         try {
-            const response = await fetch(this.historicalApiUrl);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            const response = await axios.get(this.historicalApiUrl);
+            const data = response.data;
+            // Extract close prices from Binance klines data
+            if (Array.isArray(data)) {
+                this.historicalData = data.map(item => parseFloat(item[4]));
+            } else {
+                console.warn('Historical data is not an array or missing');
+                this.historicalData = [];
             }
-            const data = await response.json();
-            // Extract closing prices from klines data
-            this.historicalData = data.map(kline => parseFloat(kline[4])); // kline[4] is close price
+            // Calculate 24h change
+            if (this.historicalData.length > 1) {
+                const firstPrice = this.historicalData[0];
+                const lastPrice = this.historicalData[this.historicalData.length - 1];
+                this.change24h = lastPrice - firstPrice;
+                this.changePercent = (this.change24h / firstPrice) * 100;
+            } else {
+                this.change24h = 0;
+                this.changePercent = 0;
+            }
             this.updateCharts();
         } catch (error) {
             console.error('Error fetching historical data:', error);
             // Set empty data on error to prevent chart errors
             this.historicalData = [];
+            this.change24h = 0;
+            this.changePercent = 0;
             this.updateCharts();
         }
     }
 
     async fetchPrice(retryCount = 0) {
         try {
-            const response = await fetch(this.apiUrl);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
+            const response = await axios.get(this.apiUrl);
+            const data = response.data;
             this.connectionStatusDisplay.setConnected();
-            this.updateUI(data);
+            // Format data to match expected structure
+            const formattedData = {
+                lastPrice: parseFloat(data.price),
+                priceChangePercent: this.changePercent,
+                priceChange: this.change24h
+            };
+            this.updateUI(formattedData);
         } catch (error) {
             console.error('Error fetching price:', error);
             if (retryCount < this.maxRetries) {
@@ -435,8 +454,8 @@ class PriceTracker {
         this.fetchPrice(); // Initial price fetch
         this.intervalId = setInterval(() => {
             this.fetchPrice();
-            // Fetch historical data every hour (less frequently)
-            if (Date.now() % 3600000 < 5000) { // Roughly every hour
+            // Fetch historical data every 5 seconds
+            if (Date.now() % 5000 < 1000) { // Roughly every 5 seconds
                 this.fetchHistoricalData();
             }
         }, this.updateInterval);

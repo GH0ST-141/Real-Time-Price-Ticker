@@ -1,3 +1,6 @@
+/**
+ * Base UI Component class for DOM element manipulation
+ */
 class UIComponent {
     constructor(elementId) {
         this.element = document.getElementById(elementId);
@@ -24,6 +27,13 @@ class UIComponent {
     }
 }
 
+// ========================================
+// UI DISPLAY COMPONENTS
+// ========================================
+
+/**
+ * Price display component with currency formatting
+ */
 class PriceDisplay extends UIComponent {
     constructor() {
         super('price');
@@ -53,6 +63,9 @@ class PriceDisplay extends UIComponent {
     }
 }
 
+/**
+ * 24-hour change percentage display component
+ */
 class ChangePercentDisplay extends UIComponent {
     constructor() {
         super('changePercent');
@@ -79,6 +92,9 @@ class ChangePercentDisplay extends UIComponent {
     }
 }
 
+/**
+ * 24-hour change amount display component
+ */
 class Change24hDisplay extends UIComponent {
     constructor() {
         super('change24h');
@@ -106,6 +122,9 @@ class Change24hDisplay extends UIComponent {
     }
 }
 
+/**
+ * Last updated timestamp display component
+ */
 class LastUpdatedDisplay extends UIComponent {
     constructor() {
         super('lastUpdated');
@@ -123,6 +142,9 @@ class LastUpdatedDisplay extends UIComponent {
     }
 }
 
+/**
+ * Connection status display component
+ */
 class ConnectionStatusDisplay extends UIComponent {
     constructor() {
         super('connectionStatus');
@@ -137,6 +159,13 @@ class ConnectionStatusDisplay extends UIComponent {
     }
 }
 
+// ========================================
+// CHART COMPONENTS
+// ========================================
+
+/**
+ * Mini chart component for displaying price trends
+ */
 class MiniChart extends UIComponent {
     constructor(elementId) {
         super(elementId);
@@ -188,6 +217,13 @@ class MiniChart extends UIComponent {
     }
 }
 
+// ========================================
+// INDICATOR COMPONENTS
+// ========================================
+
+/**
+ * Price change indicator dot component
+ */
 class IndicatorDotDisplay extends UIComponent {
     constructor() {
         super('indicatorDot');
@@ -204,6 +240,9 @@ class IndicatorDotDisplay extends UIComponent {
     }
 }
 
+/**
+ * Price trend indicator arrow component
+ */
 class IndicatorDisplay extends UIComponent {
     constructor() {
         super('indicator');
@@ -230,6 +269,13 @@ class IndicatorDisplay extends UIComponent {
     }
 }
 
+// ========================================
+// THEME MANAGEMENT
+// ========================================
+
+/**
+ * Theme manager for light/dark mode switching
+ */
 class ThemeManager {
     constructor() {
         this.button = document.getElementById('themeToggle');
@@ -266,14 +312,25 @@ class ThemeManager {
     }
 }
 
+// ========================================
+// MAIN PRICE TRACKER
+// ========================================
+
+/**
+ * Main price tracker class that manages API calls and UI updates
+ */
 class PriceTracker {
     constructor(config = {}) {
+        // API Configuration
         this.apiUrl = config.apiUrl || 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT';
         this.historicalApiUrl = 'https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1h&limit=24';
+
+        // Update Configuration
         this.updateInterval = config.updateInterval || 5000;
         this.maxRetries = config.maxRetries || 3;
         this.retryDelay = config.retryDelay || 1000;
 
+        // Data Storage
         this.previousPrice = null;
         this.historicalData = [];
         this.changePercent = 0;
@@ -281,7 +338,7 @@ class PriceTracker {
         this.intervalId = null;
         this.isRunning = false;
 
-        // Initialize UI components
+        // Initialize UI Components
         this.priceDisplay = new PriceDisplay();
         this.changePercentDisplay = new ChangePercentDisplay();
         this.change24hDisplay = new Change24hDisplay();
@@ -294,6 +351,9 @@ class PriceTracker {
         this.card = document.getElementById('priceCard');
     }
 
+    /**
+     * Fetches historical price data from Binance API
+     */
     async fetchHistoricalData() {
         try {
             const response = await axios.get(this.historicalApiUrl);
@@ -326,6 +386,9 @@ class PriceTracker {
         }
     }
 
+    /**
+     * Fetches current price data from Binance API
+     */
     async fetchPrice(retryCount = 0) {
         try {
             const response = await axios.get(this.apiUrl);
@@ -350,6 +413,9 @@ class PriceTracker {
         }
     }
 
+    /**
+     * Updates the mini charts with historical data
+     */
     updateCharts() {
         if (this.historicalData.length > 0) {
             this.priceChart.updateChart(this.historicalData);
@@ -358,6 +424,9 @@ class PriceTracker {
         }
     }
 
+    /**
+     * Updates all UI components with new data
+     */
     updateUI(data) {
         const currentPrice = parseFloat(data.lastPrice);
         const changePercent = parseFloat(data.priceChangePercent);
@@ -373,6 +442,9 @@ class PriceTracker {
         this.previousPrice = currentPrice;
     }
 
+    /**
+     * Initializes UI components to loading state
+     */
     initializeUI() {
         // Set initial loading state
         this.priceDisplay.setText('--');
@@ -394,6 +466,9 @@ class PriceTracker {
         this.connectionStatusDisplay.setText('--');
     }
 
+    /**
+     * Updates price change indicators and card styling
+     */
     updateIndicator(currentPrice) {
         // Remove previous border classes
         this.card.classList.remove('border-success', 'border-danger', 'border-secondary');
@@ -424,6 +499,9 @@ class PriceTracker {
         }
     }
 
+    /**
+     * Displays error state in UI
+     */
     showError(message) {
         console.error(message);
         // Update UI to show error state
@@ -446,6 +524,9 @@ class PriceTracker {
         this.connectionStatusDisplay.setDisconnected();
     }
 
+    /**
+     * Starts the price tracking
+     */
     start() {
         if (this.isRunning) return;
         this.isRunning = true;
@@ -462,6 +543,9 @@ class PriceTracker {
         console.log('Price tracker started');
     }
 
+    /**
+     * Stops the price tracking
+     */
     stop() {
         if (!this.isRunning) return;
         this.isRunning = false;
@@ -472,6 +556,9 @@ class PriceTracker {
         console.log('Price tracker stopped');
     }
 
+    /**
+     * Updates tracker configuration
+     */
     updateConfig(newConfig) {
         Object.assign(this, newConfig);
         if (this.isRunning) {
@@ -481,8 +568,14 @@ class PriceTracker {
     }
 }
 
-// Initialize components
+// ========================================
+// APPLICATION INITIALIZATION
+// ========================================
+
+// Initialize theme manager
 const themeManager = new ThemeManager();
+
+// Initialize price tracker
 const tracker = new PriceTracker();
 tracker.start();
 

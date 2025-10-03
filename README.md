@@ -1,6 +1,6 @@
 # 🚀 BTC/USDT Real-Time Price Tracker
 
-A modern, responsive web application for tracking Bitcoin (BTC) to US Dollar (USDT) prices in real-time with beautiful visualizations and smooth animations.
+A modern, responsive web application for tracking Bitcoin (BTC) to US Dollar (USDT) prices in real-time with beautiful visualizations and smooth animations. Built with vanilla JavaScript and Bootstrap 5.
 
 ## ✨ Features
 
@@ -10,7 +10,7 @@ A modern, responsive web application for tracking Bitcoin (BTC) to US Dollar (US
 - **5-second updates** for real-time data
 - **Automatic retry logic** for connection failures
 - **Connection status indicator** showing API connectivity
-- **Health check endpoints** for system monitoring
+- **24-hour change calculations** updated every 5 seconds
 
 ### 📈 Advanced Visual Analytics
 
@@ -28,153 +28,160 @@ A modern, responsive web application for tracking Bitcoin (BTC) to US Dollar (US
 - **Professional styling** with Bootstrap 5
 - **Theme-aware color schemes** for optimal contrast
 
-### 🔧 Enterprise-Grade Backend
+### 🔧 Technical Features
 
-- **Security middleware** (Helmet, CORS, CSP)
-- **GZIP compression** for faster loading
-- **Graceful error handling** and logging
-- **Production-ready Express server**
-- **Environment variable configuration**
-- **API status monitoring endpoints**
+- **Component-based architecture** with ES6 classes
+- **Axios HTTP client** for reliable API calls
+- **Error handling and recovery** mechanisms
+- **Modular code organization** with JSDoc documentation
+- **No server dependencies** - runs directly in browser
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- npm or yarn
+- Modern web browser with JavaScript enabled
+- Internet connection for API access
 
 ### Installation
 
 1. **Clone the repository**
 
-   ```bash
-   git clone https://github.com/yourusername/real-time-price-tracker.git
-   cd real-time-price-tracker
-   ```
+    ```bash
+    git clone https://github.com/yourusername/real-time-price-tracker.git
+    cd real-time-price-tracker
+    ```
 
-2. **Install dependencies**
+2. **Open the application**
 
-   ```bash
-   npm install
-   ```
+    Simply open `index.html` in your web browser, or use a local server:
 
-3. **Start the development server**
+    ```bash
+    # Using Python (if available)
+    python -m http.server 8000
 
-   ```bash
-   npm run dev
-   ```
+    # Using Node.js (if available)
+    npx http-server
 
-4. **Open your browser**
+    # Or simply open index.html directly in browser
+    ```
 
-   ```bash
-   http://localhost:3000
-   ```
+3. **Optional: Handle SSL certificate issues**
 
-### Production Deployment
+    If you encounter SSL certificate errors with Binance API, configure your browser to ignore certificate errors for development (see Development section below).
 
-```bash
-# Set production environment
-export NODE_ENV=production
+### Deployment
 
-# Start the server
-npm start
-```
+The application is static and can be deployed to any web server or CDN:
+
+#### Render Deployment
+- **Service Type**: Static Site
+- **Build Command**: Leave empty
+- **Publish Directory**: `./` (important: not `build` or `dist`)
+- **Free tier**: Available with automatic HTTPS
+
+#### Other Platforms
+- **GitHub Pages**: Push to gh-pages branch
+- **Netlify/Vercel**: Connect repository for automatic deployment
+- **Traditional hosting**: Upload files to web server
 
 ## 📁 Project Structure
 
 ```text
 real-time-price-tracker/
-├── index.html          # Main HTML file
-├── style.css           # Application styles
-├── script.js           # Frontend JavaScript (components)
-├── server.js           # Express server
-├── package.json        # Dependencies and scripts
+├── index.html          # Main HTML file with Bootstrap and Axios CDN
+├── style.css           # Application styles and custom CSS
+├── script.js           # Frontend JavaScript with ES6 classes and components
 ├── README.md           # This file
+├── LICENSE             # MIT License
 └── images/
-    └── bitcoin-logo.gif # Bitcoin logo
+    └── bitcoin-logo.gif # Bitcoin logo asset
 ```
 
 ## 🏗️ Architecture
 
 ### Frontend Components
 
-- **PriceDisplay**: Formats and displays BTC price
-- **ChangePercentDisplay**: Shows 24h percentage change
-- **Change24hDisplay**: Shows 24h dollar change
-- **MiniChart**: Renders small line charts
+- **UIComponent**: Base class for DOM manipulation
+- **PriceDisplay**: Formats and displays BTC price with currency formatting
+- **ChangePercentDisplay**: Shows 24h percentage change with color coding
+- **Change24hDisplay**: Shows 24h dollar change with trend indicators
+- **MiniChart**: Renders SVG line charts with grid lines
 - **ConnectionStatusDisplay**: Shows API connection status
-- **ThemeManager**: Handles light/dark theme switching
+- **IndicatorDisplay**: Arrow indicators for price trends
+- **IndicatorDotDisplay**: Colored dot indicators
+- **ThemeManager**: Handles light/dark theme switching with persistence
 
-### Backend Features
+### Core Features
 
-- **Express.js server** with security middleware
-- **CORS support** for cross-origin requests
-- **Compression** for faster loading
-- **Helmet** for security headers
-- **Health check endpoints**
+- **PriceTracker**: Main orchestrator class managing API calls and UI updates
+- **Axios Integration**: HTTP client for reliable API communication
+- **Error Handling**: Automatic retry logic and graceful error states
+- **Real-time Updates**: 5-second intervals for price and historical data
+- **Responsive Design**: Bootstrap 5 for mobile-first approach
 
-## 🎯 API Endpoints
-
-### Application Endpoints
-
-- `GET /` - Main price tracker application
-- `GET /health` - System health check with uptime and version info
-- `GET /api/status` - API status with feature information
+## 🎯 API Integration
 
 ### External APIs
 
-- **Binance API**: Real-time cryptocurrency data
-  - `GET /api/v3/ticker/24hr?symbol=BTCUSDT` - Current price and 24h stats
-  - `GET /api/v3/klines?symbol=BTCUSDT&interval=1h&limit=24` - 24-hour price history
+- **Binance API**: Real-time cryptocurrency data (no authentication required)
+  - `GET /api/v3/ticker/price?symbol=BTCUSDT` - Current BTC/USDT price
+  - `GET /api/v3/klines?symbol=BTCUSDT&interval=1h&limit=24` - 24-hour hourly price history
+
+### Browser Compatibility
+
+- **SSL Certificate Handling**: May require browser configuration to bypass certificate errors for Binance API
+- **CORS**: Direct API calls work without proxy in most modern browsers
+- **Axios**: Handles HTTP requests with automatic JSON parsing and error handling
 
 ## 🎨 Customization
-
-### Environment Variables
-
-```bash
-# Server configuration
-PORT=3000                    # Server port
-NODE_ENV=development         # Environment mode
-ALLOWED_ORIGINS=http://localhost:3000,https://yourdomain.com  # CORS origins
-```
 
 ### Styling
 
 Modify `style.css` to customize:
 
-- Color schemes
-- Chart dimensions
-- Animation timings
+- Color schemes and themes
+- Chart dimensions and styling
+- Animation timings and transitions
 - Responsive breakpoints
+- Font families and sizes
 
 ### Configuration
 
 Update `script.js` to modify:
 
-- Update intervals
-- API endpoints
-- Retry logic
-- Chart parameters
+- **Update Intervals**: Change `updateInterval` in PriceTracker constructor
+- **API Endpoints**: Modify `apiUrl` and `historicalApiUrl` for different data sources
+- **Retry Logic**: Adjust `maxRetries` and `retryDelay` for error handling
+- **Chart Parameters**: Customize chart dimensions in MiniChart class
+- **Theme Persistence**: Modify localStorage key in ThemeManager
+
+### Component Customization
+
+Each UI component can be easily extended:
+
+- **PriceDisplay**: Modify currency formatting and display options
+- **MiniChart**: Adjust chart dimensions, grid lines, and styling
+- **ThemeManager**: Add new themes or modify existing color schemes
 
 ## 🔧 Development
 
-### Available Scripts
+### Local Development
 
-```bash
-npm run dev         # Start development server with auto-reload (nodemon)
-npm run dev:simple  # Start simple development server (no auto-reload)
-npm run dev:win     # Windows-optimized development server
-npm start           # Start production server
-npm test            # Run tests (when implemented)
-```
+1. **Clone and open**: Download the repository and open `index.html` in your browser
+2. **Live editing**: Edit files directly and refresh browser to see changes
+3. **Browser dev tools**: Use F12 to inspect elements and debug JavaScript
+4. **SSL handling**: Configure browser to ignore certificate errors if needed (see Quick Start)
 
 ### Code Style
 
-- **ES6+ JavaScript** with modern syntax
-- **Component-based architecture** for reusability
-- **Bootstrap 5** for responsive design
-- **Font Awesome** icons for consistency
+- **ES6+ JavaScript** with classes, arrow functions, and modern syntax
+- **Component-based architecture** with inheritance and composition
+- **JSDoc documentation** for all classes and methods
+- **Modular organization** with clear section separators
+- **Bootstrap 5** for responsive design and utilities
+- **Font Awesome** icons for consistent UI elements
+- **Axios** for reliable HTTP requests with error handling
 
 ## 🌟 Key Features Explained
 
@@ -207,19 +214,22 @@ npm test            # Run tests (when implemented)
 
 ## 🛡️ Security & Performance
 
-### Security Features
+### Security Considerations
 
-- **Helmet.js**: Security headers
-- **CORS**: Controlled cross-origin access
-- **CSP**: Content Security Policy
-- **Input validation**: Safe data handling
+- **No server-side processing**: All logic runs client-side
+- **API authentication**: Uses public Binance endpoints (no sensitive data)
+- **Content Security Policy**: Relies on Bootstrap/Axios CDNs
+- **Input validation**: Client-side data sanitization
+- **HTTPS enforcement**: Modern browsers require secure connections
 
 ### Performance Optimizations
 
-- **GZIP compression**: Reduced bandwidth
-- **Static file caching**: Faster reloads
-- **Efficient rendering**: Optimized DOM updates
-- **Lazy loading**: On-demand chart rendering
+- **Efficient DOM updates**: Targeted element manipulation
+- **SVG charts**: Lightweight vector graphics for charts
+- **Bootstrap utilities**: Optimized CSS classes
+- **Axios caching**: Browser-level HTTP caching
+- **Lazy initialization**: Components created on demand
+- **Minimal dependencies**: Only essential libraries loaded
 
 ## 🤝 Contributing
 
@@ -235,7 +245,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- **Binance API** for real-time cryptocurrency data
-- **Bootstrap** for responsive UI components
-- **Font Awesome** for beautiful icons
-- **Express.js** for robust server framework
+- **Binance API** for providing free, reliable cryptocurrency data
+- **Bootstrap 5** for responsive UI components and utilities
+- **Font Awesome** for consistent and beautiful icons
+- **Axios** for robust HTTP client functionality
+- **Bootstrap Icons** for additional iconography
